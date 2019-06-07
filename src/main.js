@@ -3,7 +3,11 @@ import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css';
 
-import { getConditions, getTopDoctors } from "./betterDocApi";
+import {
+  getConditions,
+  getTopDoctors,
+  getDoctorById
+} from "./betterDocApi";
 //$(document).ready(function() {
 
 //});
@@ -41,9 +45,16 @@ function handleUi() {
 
 
 function viewDoctor(id) {
-
+  $('#frontCards').html(`<div class="loader"></div>`);
+  getDoctorById.then((doc) => {
+    buildDocView(doc);
+  });
 }
 
+function buildDocView(doctor) {
+
+
+}
 
 
 function buildFrontCards(doctors) {  

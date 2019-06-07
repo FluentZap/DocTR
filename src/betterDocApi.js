@@ -1,3 +1,18 @@
+export function getDoctorById(id) {
+  let args = {
+    url: `https://api.betterdoctor.com/2016-03-01/doctors/${id}/`,
+    parameters: {      
+      //fields: 'profile,specialties',
+      user_key: process.env.exports.apiKey
+    }
+  };
+  return getDoctorAPI(buildURL(args));
+}
+
+
+
+
+
 //Get Top Doctors By Location
 export function getTopDoctors(lat, lon) {
   let args = {
@@ -5,6 +20,7 @@ export function getTopDoctors(lat, lon) {
     parameters: {
       location: `${lat},${lon},100`,
       sort: 'rating-asc',
+      fields: 'profile,specialties',
       user_key: process.env.exports.apiKey
     }
   };

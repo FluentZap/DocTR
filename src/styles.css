@@ -20,7 +20,7 @@ body {
     flex-flow: column;
 }
 
-.card-body a {
+.card-body button {
     margin-top: auto;
 }
 
