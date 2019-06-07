@@ -1,9 +1,42 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">        
-        <title>Template</title>        
-    </head>
-    <body>        
-    </body>
+
+<head>
+    <meta charset="utf-8">
+    <title>DocTR - Find a doctor now</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-light rounded">
+
+        <a class="navbar-brand" href="#">DocTR</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Find a Doctor<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Search Symptoms</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Tom Baker" aria-label="Search">
+                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search Doctors</button>
+            </form>
+        </div>
+    </nav>
+    <div id="front" class="container">
+        <div id="frontCards" class="row">
+            <div class="loader"></div>
+        </div>
+    </div>
+
+</body>
+
 </html>

@@ -1,10 +1,14 @@
-function buildURL(args) {
-  let parameters = "";
-  Object.keys(args.parameters).forEach(key => {
-    parameters += parameters === "" ? "" : "&";
-    parameters += `${key}=${args.parameters[key]}`;
-  });
-  return `${args.url}?${parameters}`;
+//Get Top Doctors By Location
+export function getTopDoctors(lat, lon) {
+  let args = {
+    url: `https://api.betterdoctor.com/2016-03-01/doctors/`,
+    parameters: {
+      location: `${lat},${lon},100`,
+      sort: 'rating-asc',
+      user_key: process.env.exports.apiKey
+    }
+  };
+  return getDoctorAPI(buildURL(args));
 }
 
 //Get Conditions Call
@@ -18,6 +22,16 @@ export function getConditions(limit, skip) {
     }
   };
   return getDoctorAPI(buildURL(args));
+}
+
+//URL Builder
+function buildURL(args) {
+  let parameters = "";
+  Object.keys(args.parameters).forEach(key => {
+    parameters += parameters === "" ? "" : "&";
+    parameters += `${key}=${args.parameters[key]}`;
+  });
+  return `${args.url}?${parameters}`;
 }
 
 //Base API call
