@@ -2,22 +2,15 @@ import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css';
 
-import {
-  getConditions,
+import {  
   getTopDoctors,
-  getDoctorById
+  getDoctorById,
+  getDoctorByQuery
 } from "./betterDocApi";
-//$(document).ready(function() {
-
-//});
-
-// getConditions(5, 0).then((response) => {
-//   console.log(response);
-// });
 
 
 $(() => {
-  viewMainMenu()
+  viewMainMenu();
   handleUi();
 });
 
@@ -25,25 +18,50 @@ $(() => {
 function viewMainMenu() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition((position) => {
-      getTopDoctors(position.coords.latitude, position.coords.longitude).then((doctors) => {
-        buildFrontCards(doctors);
-        $('.docCard').click(function () {
-          viewDoctor(this.id);
-        });
-      }, (error)=>{
-        $('#front').html(`<h4 class="text-center m-auto">Could not access BetterDoctor database<br><small>${error}<small></h4>`);
-      }
-      );
+      viewTopDoctors(position.coords.latitude, position.coords.longitude);
     }, () => {
-      $('#front').html(`<h4 class="text-center m-auto">Location data blocked by browser<br><small>Allow to see nearby doctors with a high rating<small></h4>`);
+      viewTopDoctors('45.515', '-122.679',
+        `<h4 class="text-center m-auto">Location data blocked by browser<br><small>Allow to see nearby doctors with a high rating<small></h4>`);
     });
   } else {
-    $('#front').html(`<h4 class="text-center m-auto">Location data not available on your browser</h4>`);
+    viewTopDoctors('45.515', '-122.679',
+      `<h4 class="text-center m-auto">Location data not available on your browser</h4>`);
   }
 }
 
+function viewTopDoctors(lat, lon, prepend) {
+  getTopDoctors(lat, lon).then((doctors) => {
+    buildFrontCards(doctors);
+    $('#front').prepend(prepend);
+    $('.docCard').click(function () {
+      viewDoctor(this.id);
+    });
+  }, (error) => {
+    $('#front').html(`<h4 class="text-center m-auto">Could not access BetterDoctor database<br><small>${error}<small></h4>`);
+  });
+}
 
-function handleUi() {  
+
+function handleUi() {
+  $('#search-form').submit((event) => {
+    event.preventDefault();
+    getDoctorByQuery('45.515', '-122.679', $('#search-value').val()).then((doctors) => {
+      buildFrontCards(doctors);
+      $('.docCard').click(function () {
+        viewDoctor(this.id);
+      });      
+      if (doctors.data.length !== 0) {
+        $('#front').prepend(`<h4 class="text-center m-auto">Search results for: <small>${$('#search-value').val()}</small></h4>`);
+      } else {
+        $('#front').prepend(`<h4 class="text-center m-auto">No search results for: <small>${$('#search-value').val()}</small></h4>`);
+      }
+      
+      
+      $('#search-value').val("");
+    }, (error) => {
+      $('#front').html(`<h4 class="text-center m-auto">Could not access BetterDoctor database<br><small>${error}<small></h4>`);
+    });
+  });
 }
 
 
@@ -51,15 +69,14 @@ function viewDoctor(id) {
   $('#front').html(`<div class="loader"></div>`);
   getDoctorById(id).then((doc) => {
     buildDocView(doc.data);
-  }, (error) =>{
+  }, (error) => {
     $('#front').html(`<h4 class="text-center m-auto">Could not access BetterDoctor database<br><small>${error}<small></h4>`);
   });
 }
 
-function buildDocView(doctor) {
-  console.log(doctor);
-  let offices = ""
-  let specialties = ""
+function buildDocView(doctor) {  
+  let offices = "";
+  let specialties = "";
   doctor.specialties.forEach((specialty) => {
     if (specialty.actor != undefined) {
       specialties += `<p>${specialty.actor}</p>`;
@@ -103,8 +120,6 @@ function buildDocView(doctor) {
 </div>
 `;
   $('#front').html(view);
-  console.log("here");
-
 }
 
 
@@ -112,13 +127,12 @@ function buildFrontCards(doctors) {
   let cards = `<div class="row">`;
 
   doctors.data.forEach((doc) => {
-    let specialties = ""
+    let specialties = "";
     doc.specialties.forEach((specialty) => {
       if (specialty.actor != undefined) {
         specialties += `<div class="card-text">${specialty.actor}</div>`;
       }
-    });
-    //<p class="card-text">${doc.profile.title === undefined ? "" : doc.profile.title}</p>    
+    });    
     cards +=
       `
 <div class="card" style="width: 12rem;">

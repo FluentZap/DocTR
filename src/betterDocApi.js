@@ -1,3 +1,19 @@
+//Get doctor by query
+export function getDoctorByQuery(lat, lon, query) {
+  let args = {
+    url: `https://api.betterdoctor.com/2016-03-01/doctors/`,
+    parameters: {
+      location: `${lat},${lon},100`,
+      fields: 'profile,specialties,uid',
+      query: query,
+      user_key: process.env.exports.apiKey
+    }
+  };
+  return getDoctorAPI(buildURL(args));
+}
+
+
+//Get Doctor by Id
 export function getDoctorById(id) {
   let args = {
     url: `https://api.betterdoctor.com/2016-03-01/doctors/${id}/`,
@@ -8,10 +24,6 @@ export function getDoctorById(id) {
   };
   return getDoctorAPI(buildURL(args));
 }
-
-
-
-
 
 //Get Top Doctors By Location
 export function getTopDoctors(lat, lon) {
