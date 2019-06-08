@@ -20,7 +20,7 @@ export function getTopDoctors(lat, lon) {
     parameters: {
       location: `${lat},${lon},100`,
       sort: 'rating-asc',
-      fields: 'profile,specialties',
+      fields: 'profile,specialties,uid',
       user_key: process.env.exports.apiKey
     }
   };
@@ -61,7 +61,7 @@ function getDoctorAPI(url) {
       if (request.status === 200) {
         resolve(request.response);
       } else {
-        reject(Error('Error in Request' + request.statusText));
+        reject(request.statusText);
       }
     };
 
