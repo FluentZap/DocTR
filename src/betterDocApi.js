@@ -26,11 +26,11 @@ export function getDoctorById(id) {
 }
 
 //Get Top Doctors By Location
-export function getTopDoctors(lat, lon) {
+export function getTopDoctors(lat, lon, range) {
   let args = {
     url: `https://api.betterdoctor.com/2016-03-01/doctors/`,
     parameters: {
-      location: `${lat},${lon},100`,
+      location: `${lat},${lon},${range}`,
       sort: 'rating-asc',
       fields: 'profile,specialties,uid',
       user_key: process.env.exports.apiKey
