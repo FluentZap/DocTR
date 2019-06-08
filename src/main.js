@@ -19,7 +19,7 @@ function viewMainMenu() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition((position) => {
       viewTopDoctors(position.coords.latitude, position.coords.longitude);
-    }, () => {      
+    }, () => {
       viewTopDoctors('45.515', '-122.679',
         `<h4 class="text-center m-auto">Location data blocked by browser<br><small>Allow to see nearby doctors with a high rating<small></h4>`);
     }, {timeout: 15000});
